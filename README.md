@@ -15,11 +15,11 @@ The real utility of the application is found through the dynamically generated t
 Since the application was intended for only a small number of users and will not be available to access by any public means, no considerations for user authentication or other security concerns related to publicly accessible software have been implemented.  This also creates a better experience for the end users by removing unnecessary actions. 
 
 ### Development Environment
-Django 1.10
+Django 1.10  
 Python 3.6
 
 ### Third Party Libraries Used
-jQuery v3.4.1 (https://jquery.org)
-Bootstrap v3.3.7 (http://getbootstrap.com)
+jQuery v3.4.1 (https://jquery.org)  
+Bootstrap v3.3.7 (http://getbootstrap.com)  
 Chart.js v2.8.0 (https://www.chartjs.org)
 
