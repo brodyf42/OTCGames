@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block head_block %}
+	<title>Game Tracker | Delete Event</title>
+{% endblock %}
+
+{% block body_block %}
+	<h1>Are you sure you want to delete the following event?</h1>
+
+	<div class="panel panel-primary fit-content">
+		<div class="panel-heading">
+			<h2 class="panel-title">Event Details</h2>
+		</div>
+
+		<div class="panel-body">
+			<h2>{{object.date|date:'l F jS, Y'}}</h2>
+			<p>{{event.player_count}} Participants | {{event.games.count}} Games Played</p>
+		</div>
+	</div>
+
+	<div class="alert alert-warning fit-content">
+		<p>
+			Deleting this event will delete all game play instances for this event as well.
+			<br>
+			The play history trend charts for all associated games will no longer include this event.
+		</p>
+	</div>
+
+	<form method="post">
+		{% csrf_token %}
+		<button type="submit" class="btn btn-danger">Confirm Event Deletion</button>
+		<a class="btn btn-default" href="{% url 'GameTracker:event_detail' pk=object.pk %}">Cancel</a>
+	</form>
+{% endblock %}

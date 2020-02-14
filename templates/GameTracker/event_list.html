@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block head_block %}
+	<title>Game Tracker | Events</title>
+{% endblock %}
+
+{% block body_block %}
+	<span class="h1">Game Night Events</span>
+	<br />
+	<a class="btn btn-xs btn-primary" href="{% url 'GameTracker:event_new' %}">Add New Event</a>
+
+	{% if not events %}
+		<div class="alert alert-info fit-content">
+			<h3>Unfortunately, there are no events to display. Please create a new event.</h3>
+		</div>
+	{% else %}
+		<nav aria-label="...">
+			<ul class="pagination">
+				<li class="page-item"><a class="page-link" href="?page=1">First</a></li>
+				{% if events.has_previous %}
+					<li class="page-item"><a class="page-link" href="?page={{ events.previous_page_number }}">Previous</a></li>
+				{% else %}
+					<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+				{% endif %}
+
+				{% if nav_list|first > 1 %}
+					<li class="page-item disabled"><span>...</span></li>
+				{% endif %}
+
+				{% for page_num in nav_list %}
+					{% if page_num == events.number %}
+						<li class="page-item active"><a class="page-link" href="?page={{page_num}}">{{page_num}}<span class="sr-only">(current)</a></li>
+					{% else %}
+						<li class="page-item"><a class="page-link" href="?page={{page_num}}">{{page_num}}</a></li>
+					{% endif %}
+				{% endfor %}
+
+				{% if nav_list|last < events.paginator.num_pages %}
+					<li class="page-item disabled"><span>...</span></li>
+				{% endif %}
+
+				{% if events.has_next %}
+					<li class="page-item"><a class="page-link" href="?page={{ events.next_page_number }}">Next</a></li>
+				{% else %}
+					<li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+				{% endif %}
+				<li class="page-item"><a class="page-link" href="?page={{ events.paginator.num_pages }}">Last</a></li>
+			</ul>
+		</nav>
+
+		{% for event in events %}
+			<div class="event-title-block">
+				<p>
+					<a href="{% url 'GameTracker:event_detail' pk=event.pk %}"><span class="h3">{{event.date|date:'l F jS, Y'}}</span></a>
+					<br />
+					<span class="h4">{{event.player_count}} Participants | {{event.games.count}} Games Played</span>
+				</p>
+			</div>
+		{% endfor %}
+	{% endif %}
+{% endblock %}

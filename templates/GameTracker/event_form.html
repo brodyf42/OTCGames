@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block head_block %}
+	{% if not form.instance.pk %}
+		<title>Game Tracker | New Event</title>
+	{% else %}
+		<title>Game Tracker | Edit Event</title>
+	{% endif %}
+{% endblock %}
+
+{% block body_block %}
+	<div class="panel panel-primary fit-content">
+		<div class="panel-heading">
+			{% if not form.instance.pk %}
+				<h2 class="panel-title">New Game Night Event</h2>
+			{% else %}
+				<h2 class="panel-title">Edit Event Details</h2>
+			{% endif %}
+		</div>
+
+		{% if not form.instance.pk %}
+			<div class="panel-body">
+				<div class="alert alert-info">
+					<p>Start by creating a game night event, then add games in the next step.</p>
+				</div>
+			</div>
+		{% endif %}
+
+		<form method="post">
+			{% csrf_token %}
+			<table class="table">
+				{{form.as_table}}
+				<tr><th></th><td></td></tr>
+			</table>
+				{% if not form.instance.pk %}
+					<button type="submit" class="btn btn-primary form-btn">Create Event</button>
+					<a href="{% url 'GameTracker:event_list' %}" class="btn btn-default form-btn">Cancel</a>
+				{% else %}
+					<button type="submit" class="btn btn-primary form-btn">Update Event</button>
+					<a href="{% url 'GameTracker:event_detail' pk=form.instance.pk %}" class="btn btn-default form-btn">Cancel</a>
+				{% endif %}
+		</form>
+	</div>
+{% endblock %}

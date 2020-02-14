@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+
+{% block head_block %}
+	<title>Game Tracker | Game Details</title>
+	<script type="text/javascript">
+		window.onload = function(){
+			Chart.defaults.global.defaultFontSize = 16;
+			var ctx = document.getElementById('yearlyTrendChart');
+			var yearlyChart = new Chart(ctx, {
+				type: 'bar',
+				data: {
+					labels: [
+						{% for label in object.get_year_chart_data.labels %}
+							'{{label}}',
+						{% endfor %}
+					],
+					datasets: [{
+						data: [
+							{% for value in object.get_year_chart_data.values %}
+								{{value}},
+							{% endfor %}
+						],
+						borderWidth: 1,
+						backgroundColor: "#bce8f1",
+		    			borderColor: "#31708f",
+						hoverBackgroundColor: "#bce8f1",
+		    			hoverBorderColor: "#31708f",
+					}]
+				},
+				options: {
+					responsive: true,
+					aspectRatio: 3,
+					legend: {
+						display: false,
+					},
+					scales: {
+            			yAxes: [{
+                			ticks: {
+                    			beginAtZero: true
+                			}
+            			}]
+        			},
+					layout: {
+			            padding: {
+			                left: 0,
+			                right: 0,
+			                top: 20,
+			                bottom: 0
+			            }
+		        	}
+				},
+			});
+
+			var ctx = document.getElementById('monthlyTrendChart');
+			var monthlyChart = new Chart(ctx, {
+				type: 'bar',
+				data: {
+					labels: [
+						{% for label in object.get_month_chart_data.labels %}
+							'{{label}}',
+						{% endfor %}
+					],
+					datasets: [{
+						data: [
+							{% for value in object.get_month_chart_data.values %}
+								{{value}},
+							{% endfor %}
+						],
+						borderWidth: 1,
+						backgroundColor: "#bce8f1",
+		    			borderColor: "#31708f",
+						hoverBackgroundColor: "#bce8f1",
+		    			hoverBorderColor: "#31708f",
+					}]
+				},
+				options: {
+					responsive: true,
+					aspectRatio: 3,
+					legend: {
+						display: false,
+					},
+					scales: {
+            			yAxes: [{
+                			ticks: {
+                    			beginAtZero: true
+                			}
+            			}],
+        			},
+					layout: {
+			            padding: {
+			                left: 0,
+			                right: 0,
+			                top: 20,
+			                bottom: 0
+			            }
+		        	}
+				},
+			});
+		}
+	</script>
+{% endblock %}
+
+{% block body_block %}
+	<table class="table borderless">
+		<tr>
+			<td><span class="h2">{{ object.title }}</span></td>
+			<td align="right">
+				<a class="btn btn-primary" href="{% url 'GameTracker:game_update' pk=object.pk %}">Edit Game</a>
+				<a class="btn btn-default" href="{% url 'GameTracker:game_delete' pk=object.pk %}">Delete Game</a>
+			</td>
+		</tr>
+	</table>
+
+	{% if object.get_played_games.count == 0 %}
+		{% if object.in_library %}
+			<p>In Demo Library: Yes</p>
+		{% else %}
+			<p>In Demo Library: No</p>
+		{% endif %}
+		<div class="alert alert-info fit-content">
+			<p>
+				This game has not been added to any events.
+				<br>
+				Add this game to an event to see gameplay data.
+			</p>
+		</div>
+	{% else %}
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">Basic Information</h3>
+			</div>
+
+			<table class="table">
+				<tr>
+					<th class="text-center">Most Recent Play</th>
+					<th class="text-center">Avg. Play Frequency</th>
+					<th class="text-center">Plays in Last 30 Days</th>
+					<th class="text-center">Plays in Last Year</th>
+					<th class="text-center">Lifetime Plays</th>
+					<th class="text-center">In Library?</th>
+				</tr>
+				<tr>
+					<td class="text-center">{{object.get_last_played|date:'F j, Y'}}</td>
+					<td class="text-center">{{object.get_play_delta}} days</td>
+					<td class="text-center">{{object.get_month_plays}}</td>
+					<td class="text-center">{{object.get_year_plays}}</td>
+					<td class="text-center">{{object.get_events|length}}</td>
+					<td class="text-center">
+						{% if object.in_library %}
+							Yes
+						{% else %}
+							No
+						{% endif %}
+					</td>
+				</tr>
+			</table>
+		</div>
+
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<span class="panel-title">Play History&nbsp;</span>
+				<a href="#eventList" class="btn btn-xs btn-default" data-toggle="collapse" aria-expanded="true">Toggle</a>
+			</div>
+
+			<div class="list-group collapse" id="eventList">
+				{% for event in object.get_events %}
+					<a class="list-group-item" href="{% url 'GameTracker:event_detail' pk=event.pk %}">{{ event.date|date:'l F jS, Y' }}</a>
+				{% endfor %}
+			</div>
+		</div>
+
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<span class="panel-title">Plays by Year</span>
+			</div>
+
+			<canvas id="yearlyTrendChart"></canvas>
+		</div>
+
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<span class="panel-title">Plays by Month</span>
+			</div>
+
+			<canvas id="monthlyTrendChart"></canvas>
+		</div>
+	{% endif %}
+{% endblock %}

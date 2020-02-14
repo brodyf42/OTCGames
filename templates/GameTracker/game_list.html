@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block head_block %}
+	<title>Game Tracker | Games</title>
+{% endblock %}
+
+{% block body_block %}
+	<span class="h1">Game List</span>
+	<br />
+	<a class="btn btn-xs btn-primary" href="{% url 'GameTracker:game_new' %}">Add New Game</a>
+
+	<nav>
+		<ul class="pagination">
+			{% if category|upper == 'ALL' %}
+				<li class="active"><a href="#">All</a></li>
+			{% else %}
+				<li><a href="/games">All</a></li>
+			{% endif %}
+
+			{% if category|upper == 'OTHER' %}
+				<li class="active"><a href="#">#</a></li>
+			{% else %}
+				<li><a href="?category=other">#</a></li>
+			{% endif %}
+
+			{% for letter in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' %}
+				{% if category|upper == letter %}
+					<li class="active"><a href="#">{{letter}}</a></li>
+				{% else %}
+					<li><a href="?category={{letter}}">{{letter}}</a></li>
+				{% endif %}
+			{% endfor %}
+		</ul>
+	</nav>
+
+	{% if not games %}
+		<div class="alert alert-info fit-content">
+			<span class="h3">
+				Unfortunately, there are no games to display for this category.
+				<br>
+				Please choose another category or create a new game.
+			</span>
+		</div>
+	{% else %}
+		<div class="fit-content">
+			<table class="table borderless">
+				{% for game in games %}
+					{% if forloop.first %}<tr>{% endif %}
+					<td class="h4 padded-right"><a href="{% url 'GameTracker:game_detail' pk=game.pk %}">{{ game.title }}</a></td>
+					{% if forloop.counter|divisibleby:3 %}</tr><tr>{% endif %}
+					{% if forloop.last %}</tr>{% endif %}
+				{% endfor %}
+			</table>
+		</div>
+	{% endif %}
+{% endblock %}

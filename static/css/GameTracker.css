@@ -1,0 +1,37 @@
+#BodySpacer{
+	height: 75px;
+}
+
+.form-btn{
+	margin: 0 0 15px 10px;
+}
+
+.navbar,{
+	font-size: 1.25em;
+}
+
+.table{
+	margin-bottom: 0;
+}
+
+.borderless td, .borderless th {
+    border: none !important;
+}
+
+.errorlist{
+	padding: 0;
+	list-style-type: none;
+	color: #CA3E2C;
+}
+
+.fit-content{
+	display:table;
+}
+
+.padded-right{
+	padding-right: 50px !important;
+}
+
+.event-title-block{
+	padding-bottom: 15px;
+}

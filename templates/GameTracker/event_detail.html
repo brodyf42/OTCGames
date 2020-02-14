@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block head_block %}
+	<title>Game Tracker | Event Details</title>
+{% endblock %}
+
+{% block body_block %}
+	<h2>{{object.date|date:'l F jS, Y'}}</h2>
+
+	<div class="">
+		<table class="table borderless">
+			<tr>
+				<td><span class="h4">{{object.player_count}} Participants | {{object.games.count}} Games Played</span></td>
+				<td align="right">
+					<a class="btn btn-primary" href="{% url 'GameTracker:event_update' pk=object.pk %}">Edit Event</a>
+					<a class="btn btn-default" href="{% url 'GameTracker:event_delete' pk=object.pk %}">Delete Event</a>
+				</td>
+			</tr>
+		</table>
+	</div>
+
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h3 class="panel-title">Games Played</h3>
+		</div>
+		<table class="table">
+			<tr>
+				<th>Game Title</th>
+				<th class="text-center">Number of Players</th>
+				<th class="text-center">Action</th>
+			</tr>
+			{% if object.games.count != 0 %}
+				{% for pg in object.get_played_games %}
+				<tr>
+					<td><span class="h4"><a href="{% url 'GameTracker:game_detail' pk=pg.game.pk %}">{{pg.game.title}}</a></span></td>
+					<td class="text-center"><span class="h4">{{pg.game_player_count}}</span></td>
+					<td class="text-center"><a class="btn btn-xs btn-danger" href="{% url 'GameTracker:played_game_delete' pk=pg.pk %}">Delete</a></td>
+				</tr>
+				{% endfor %}
+			{% endif %}
+			<tr>
+				<form action="{% url 'GameTracker:played_game_new' pk=object.pk %}" method="POST">
+					{% csrf_token %}
+					<td>{{played_game_form.game}}</td>
+					<td class="text-center">{{played_game_form.game_player_count}}</td>
+					<td class="text-center"><button type="submit" class="btn btn-success">Add Game</button></td>
+				</form>
+			</tr>
+		</table>
+	</div>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block head_block %}
+	<title>Game Tracker | Delete Game</title>
+{% endblock %}
+
+{% block body_block %}
+	<h1>Are you sure you want to delete the following game?</h1>
+
+	<div class="panel panel-primary fit-content">
+		<div class="panel-heading">
+			<h2 class="panel-title">Game Details</h2>
+		</div>
+
+		<div class="panel-body">
+			<h2>{{object.title}}</h2>
+			{% if object.in_library %}
+				<p>In Demo Library: Yes</p>
+			{% else %}
+				<p>In Demo Library: No</p>
+			{% endif %}
+		</div>
+	</div>
+
+	<div class="alert alert-warning fit-content">
+		<p>
+			Deleting this game will delete all game play instances associated to events as well.
+		</p>
+	</div>
+
+	<form method="post">
+		{% csrf_token %}
+		<button type="submit" class="btn btn-danger">Confirm Game Deletion</button>
+		<a class="btn btn-default" href="{% url 'GameTracker:game_detail' pk=object.pk %}">Cancel</a>
+	</form>
+{% endblock %}
