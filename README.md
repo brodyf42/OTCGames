@@ -14,6 +14,24 @@ The real utility of the application is found through the dynamically generated t
 
 Since the application was intended for only a small number of users and will not be available to access by any public means, no considerations for user authentication or other security concerns related to publicly accessible software have been implemented.  This also creates a better experience for the end users by removing unnecessary actions. 
 
+### Screenshots
+
+#### Event List
+
+![Event List](https://brodyf42.github.io/images/OTCGames/OTCGames_event_list.png)
+
+#### Event Details
+
+![Event Details](https://brodyf42.github.io/images/OTCGames/OTCGames_event_details.png)
+
+#### Game List
+
+![Game List](https://brodyf42.github.io/images/OTCGames/OTCGames_game_list.png)
+
+#### Game Details
+
+![Game Details](https://brodyf42.github.io/images/OTCGames/OTCGames_game_details.png)
+
 ### Development Environment
 Django 1.10  
 Python 3.6
